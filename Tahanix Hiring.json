@@ -1,0 +1,218 @@
+{
+  "name": "Tahanix Hiring",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "7deeeea6-5d02-4db2-83b0-cd73014396d2",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.2,
+      "position": [
+        -160,
+        0
+      ],
+      "id": "7e852036-6e7d-4ed0-8c10-c149f76b5dc0",
+      "name": "Webhook",
+      "webhookId": "7deeeea6-5d02-4db2-83b0-cd73014396d2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "eeaea793-8e70-4ebb-8909-c8c9ba9c3a5e",
+              "leftValue": "={{ $json.body['Do you have hands-on experience with n8n ?'] }}",
+              "rightValue": "Yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "05f2ef03-6166-41fe-aae8-2b856684e398",
+              "leftValue": "={{ $json.body['Do you have hands-on experience with Cursor / Claude Code / Codex ?'] }}",
+              "rightValue": "Yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        64,
+        0
+      ],
+      "id": "467614f2-a92e-41c7-84e4-85d21e1e6e50",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "chatId": "1270900779",
+        "text": "=Name: {{ $json.body.Name }}\nEmail: {{ $json.body.Email }}\nPhone Number: {{ $json.body['Phone Number'] }}\nLinkedIn URL: {{ $json.body['LinkedIn URL'] }}\nGithub Portfolio URL: {{ $json.body['Github Portfolio URL'] }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        -80
+      ],
+      "id": "db62a2a7-6ee7-4aab-a8e1-04d276cb2686",
+      "name": "Send a text message",
+      "webhookId": "d37f8053-3470-483b-9ae9-c879b95879f2",
+      "credentials": {
+        "telegramApi": {
+          "id": "4SxLLOd6Liua9naR",
+          "name": "Tahanix Hiring n8n Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        1328,
+        16
+      ],
+      "id": "47e2b755-9f50-4f82-b535-eaa2d7c3c226",
+      "name": "Telegram Trigger",
+      "webhookId": "10a2cd19-c7e8-4dd0-aaa0-9b0b818e5987",
+      "credentials": {
+        "telegramApi": {
+          "id": "4SxLLOd6Liua9naR",
+          "name": "Tahanix Hiring n8n Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Webhook').item.json.body.Email }}",
+        "subject": "Hiring Application Update",
+        "emailType": "text",
+        "message": "=Hi {{ $('Webhook').item.json.body.Name }},\n\nThank you for applying for automation role.\n\nWe’re pleased to let you know that you have been shortlisted for the next stage of our hiring process. Please keep an eye on your email, as we will send you more details about the next steps within the next few days.\n\nIn the meantime, no action is needed from you. We appreciate your interest in Tahanix and look forward to speaking with you soon.\n\nKind regards,\nHiring Manager\nTahanix",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        560,
+        -80
+      ],
+      "id": "a296fc9f-a782-4f65-9a2c-eb411d031ffb",
+      "name": "Shortlisted",
+      "webhookId": "779ad3ff-fdcf-4b0e-b5c5-0555e41be928",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "KevpTLv4pIrSvrrs",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Webhook').item.json.body.Email }}",
+        "subject": "Hiring Application Update",
+        "emailType": "text",
+        "message": "=Hi {{ $('Webhook').item.json.body.Name }},\n\nThank you for applying for automation role and for the time you put into your application.\n\nAfter careful review, we have decided to move forward with candidates whose experience more closely matches the current requirements. This was a difficult decision, and it does not reflect a lack of potential or ability.\n\nWe encourage you to keep developing your skills and to apply for future opportunities that align with your strengths. We wish you the very best in your job search and future career.\n\nKind regards,\nHiring Manager\nTahanix",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        320,
+        96
+      ],
+      "id": "cd5821a0-f118-4942-a495-e9744a29bc9c",
+      "name": "Update on Application",
+      "webhookId": "779ad3ff-fdcf-4b0e-b5c5-0555e41be928",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "KevpTLv4pIrSvrrs",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update on Application",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        [
+          {
+            "node": "Shortlisted",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "9f26e884-4dd3-46fa-b4e1-0403e288a88c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f1c1821d3d91d28ed97b6f0e1df44530aaef02ff03f8a68bf9269db1e51e710c"
+  },
+  "nodeGroups": [],
+  "id": "bW7CNfVdvzzJMXU5",
+  "tags": []
+}
